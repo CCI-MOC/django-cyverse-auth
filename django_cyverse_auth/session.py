@@ -11,7 +11,7 @@ from .settings import auth_settings
 # Login Hooks here:
 def create_session_token(sender, user, request, issuer="Django-Session", **kwargs):
     auth_token = create_token(user, issuer=issuer)
-    auth_token.update_expiration() # 2hr default expiry
+    auth_token.update_expiration()  # 2hr default expiry
     auth_token.save()
     request.session['username'] = auth_token.user.username
     request.session['token'] = auth_token.key

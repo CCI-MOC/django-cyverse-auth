@@ -21,7 +21,7 @@ from .protocol.ldap import ldap_validate
 from .settings import auth_settings
 from .exceptions import Unauthorized
 
-#GLOBUS Views
+# GLOBUS Views
 
 
 def globus_login_redirect(request):
@@ -66,7 +66,7 @@ def globus_callback_authorize(request):
     return HttpResponseRedirect(next_url)
 
 
-#CAS+OAuth Views
+# CAS+OAuth Views
 
 
 
@@ -76,7 +76,7 @@ def o_callback_authorize(request):
     ( Uses request.META to route which IdP is in use )
     """
     # IF globus --> globus_callback_authorize
-    referrer = request.META.get('HTTP_REFERER','no-referrer')
+    referrer = request.META.get('HTTP_REFERER', 'no-referrer')
     if 'globus' in referrer or auth_settings.GLOBUS_AUTH_URL:
         return globus_callback_authorize(request)
     return cas_callback_authorize(request)
@@ -131,7 +131,7 @@ def cas_callback_authorize(request):
     return HttpResponseRedirect(settings.REDIRECT_URL + "/application/")
 
 
-#Token Authentication Views
+# Token Authentication Views
 
 
 @csrf_exempt

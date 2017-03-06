@@ -38,7 +38,7 @@ class WSO2_JWT(JWTServiceProvider):
         Output:
         message - The Assertion message (dict)
         """
-        with open(self.keyfile_path,'r') as the_file:
+        with open(self.keyfile_path, 'r') as the_file:
             public_key = the_file.read()
         try:
             decoded_pubkey = b64decode(public_key)
@@ -73,7 +73,7 @@ class WSO2_JWT(JWTServiceProvider):
         if self.IGNORE_EXPIRY:
             token_expires = None
         else:
-            token_expires = datetime.fromtimestamp(expire_epoch_ms/1000)
+            token_expires = datetime.fromtimestamp(expire_epoch_ms / 1000)
             now_time = datetime.now()
             if token_expires <= now_time:
                 raise Unauthorized("Token is EXPIRED as of %s" % token_expires)
@@ -90,14 +90,14 @@ class WSO2_JWT(JWTServiceProvider):
             raise Unauthorized("Username %s does not yet exist as a User object -- Please create your account FIRST."
                                % username)
         user = user.get()
-        #TODO: Update the users attributes using the decoded_assertion!
+        # TODO: Update the users attributes using the decoded_assertion!
 
         return user, token_expires
 
     def _strip_wso2_username(self, raw_username):
         try:
             regexp = re.search(r'(.*)@carbon.super', raw_username)
-            username =  regexp.group(1)
+            username = regexp.group(1)
             # NOTE: REMOVE this when it is no longer true!
             # Force any username lookup to be in lowercase
             username = username.lower()
