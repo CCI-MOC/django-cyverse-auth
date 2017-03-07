@@ -56,7 +56,7 @@ def globus_authorize(request):
     flow = globus_initFlow()
     auth_uri = flow.step1_get_authorize_url()
     auth_uri += '&authentication_hint=36007761-2cf2-4e74-a068-7473afc1d054'
-    auth_uri = auth_uri.replace('access_type=offline','access_type=online')
+    auth_uri = auth_uri.replace('access_type=offline', 'access_type=online')
     logger.warn(auth_uri)
     return HttpResponseRedirect(auth_uri)
 
@@ -67,9 +67,9 @@ def globus_profile_for_token(globus_user_token):
         b64_userAndPass = b64encode(userAndPass)
         auth_header = "Basic %s" % b64_userAndPass
         r = requests.post(
-            auth_settings.GLOBUS_TOKENINFO_URL+'?include=effective', verify=False,
-            data={'token':globus_user_token},
-            headers={'Authorization':auth_header})
+            auth_settings.GLOBUS_TOKENINFO_URL + '?include=effective', verify=False,
+            data={'token': globus_user_token},
+            headers={'Authorization': auth_header})
         j_data = r.json()
         logger.info(j_data)
         return j_data
@@ -130,11 +130,11 @@ def _map_email_to_user(raw_username):
 
 def parse_atmosphere_token(token_response):
     atmosphere_scope = auth_settings.get('GLOBUS_OAUTH_ATMOSPHERE_SCOPE', 'urn:globus:auth:scope:use.jetstream-cloud.org:all')
-    atmosphere_scope = atmosphere_scope.replace('openid email profile ','').strip()
+    atmosphere_scope = atmosphere_scope.replace('openid email profile ', '').strip()
     tokens = token_response.pop('other_tokens', [])
     tokens.append(token_response)
     for token in tokens:
-        #FIXME: Make this a specific setting, rather than hard-coded.
+        # FIXME: Make this a specific setting, rather than hard-coded.
         if token['scope'] == atmosphere_scope:
             return token['access_token']
     raise Exception("Globus token valid -- Could not find a token with atmosphere scope %s" % atmosphere_scope)
@@ -147,9 +147,9 @@ def globus_validate_code(request):
     If valid: Return new AuthToken to be passed to the Resource Provider.
         else: Return None
     """
-    code = request.GET.get('code','')
-    error = request.GET.get('error','')
-    error_description = request.GET.get('error_description','')
+    code = request.GET.get('code', '')
+    error = request.GET.get('error', '')
+    error_description = request.GET.get('error_description', '')
     if error:
         error_msg = "%s: %s" % (error, error_description) if error_description else error
         raise Unauthorized(error_msg)
@@ -188,9 +188,9 @@ def globus_validate_code(request):
     first_name, last_name = _extract_first_last_name(full_name)
     username = username.lower()
     user_profile = {
-        'username':username,
-        'firstName':first_name,
-        'lastName':last_name,
+        'username': username,
+        'firstName': first_name,
+        'lastName': last_name,
         'email': email,
     }
     auth_token = create_user_and_token(user_profile, user_access_token, expiry_date, issuer)
@@ -204,7 +204,7 @@ def create_user_token_from_globus_profile(profile, access_token):
     """
 
     logger.info(profile)
-    expiry = profile['exp'] # This is an 'epoch-int'
+    expiry = profile['exp']  # This is an 'epoch-int'
     expiry = _extract_expiry_date(expiry)
     issuer = profile['iss']
     issued_at = profile['iat']
@@ -214,9 +214,9 @@ def create_user_token_from_globus_profile(profile, access_token):
     username = _extract_user_from_email(raw_username)
     first_name, last_name = _extract_first_last_name(raw_name)
     profile_dict = {
-        'username':username,
-        'firstName':first_name,
-        'lastName':last_name,
+        'username': username,
+        'firstName': first_name,
+        'lastName': last_name,
         'email': email,
     }
     auth_token = create_user_and_token(profile_dict, access_token, expiry, issuer)

@@ -81,8 +81,8 @@ def user_expiry_stats(profile):
         warn = profile['shadowWarning'][0]
 
         chgdate = epoch + timezone.timedelta(days=int(change))
-        expiry_date = chgdate+timezone.timedelta(days=int(max_val))
-        warndate = expiry_date+timezone.timedelta(days=-int(warn))
+        expiry_date = chgdate + timezone.timedelta(days=int(max_val))
+        warndate = expiry_date + timezone.timedelta(days=-int(warn))
 
         if chgdate == epoch:
             logger.warn("Could not calculate an expiration for user %s" % username)

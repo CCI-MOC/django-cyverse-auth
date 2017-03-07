@@ -27,7 +27,7 @@ from .protocol.globus import (
     globus_profile_for_token,
     create_user_token_from_globus_profile)
 from caslib import OAuthClient as CAS_OAuthClient
-#From troposphere
+# From troposphere
 import ldap
 import logging
 
@@ -151,7 +151,7 @@ class AuthTokenLoginBackend(ModelBackend):
         valid_user = valid_token.user
         return get_or_create_user(valid_user.username, {})
 
-#### Troposphere needs
+# Troposphere needs
 
 cas_oauth_client = CAS_OAuthClient(auth_settings.CAS_SERVER,
                                    auth_settings.OAUTH_CLIENT_CALLBACK,
@@ -274,9 +274,9 @@ class MockLoginBackend(authentication.BaseAuthentication):
         Return None Never.
         """
         return get_or_create_user(settings.ALWAYS_AUTH_USER, {
-            'username':settings.ALWAYS_AUTH_USER,
-            'firstName':"Mocky Mock",
-            'lastName':"MockDoodle",
+            'username': settings.ALWAYS_AUTH_USER,
+            'firstName': "Mocky Mock",
+            'lastName': "MockDoodle",
             'email': '%s@iplantcollaborative.org' % settings.ALWAYS_AUTH_USER,
             'entitlement': []
         })
@@ -309,7 +309,7 @@ class OpenstackLoginBackend(ModelBackend):
             domain = auth_settings.KEYSTONE_DOMAIN_NAME
         if '/v' not in auth_url:
             auth_url += "/v3"  # Assume v3
-        #TODO: If necessary, create a auth_setting 'feature' to select 'libcloud' or 'keystone' as the strategy and then validate token/auth the same way.
+        # TODO: If necessary, create a auth_setting 'feature' to select 'libcloud' or 'keystone' as the strategy and then validate token/auth the same way.
         if self.strategy == 'libcloud':
             user = self.auth_by_libcloud(auth_url, project_name, domain, username, password, token, request)
         else:
@@ -346,7 +346,7 @@ class OpenstackLoginBackend(ModelBackend):
         """
         Given token -- validate with keystone
         """
-        token_auth=v3.Token(
+        token_auth = v3.Token(
             auth_url=auth_url,
             token=token,
             project_name=project_name,
@@ -385,7 +385,7 @@ class OpenstackLoginBackend(ModelBackend):
         if token_username != username:
             raise Exception("Token %s does not match expected username - %s" % token_key, username)
         return token_key
-    #Alternative method -- libcloud 'strategy'
+    # Alternative method -- libcloud 'strategy'
 
     def auth_by_libcloud(self, auth_url, project_name, domain, username, password=None, token=None, request=None):
         """
@@ -400,7 +400,7 @@ class OpenstackLoginBackend(ModelBackend):
     def libcloud_validate_token(self, auth_url, username, token, project_name, domain, request):
         OpenStack = get_driver(Provider.OPENSTACK)
         driver = OpenStack(username, "",
-                   ex_force_base_url=auth_url.replace(":5000/v3",":8774/v2"),
+                   ex_force_base_url=auth_url.replace(":5000/v3", ":8774/v2"),
                    ex_force_auth_url=auth_url,
                    ex_tenant_name=project_name, ex_domain_name=domain,
                    ex_force_auth_version='3.x_password',
@@ -416,8 +416,8 @@ class OpenstackLoginBackend(ModelBackend):
 
     def libcloud_validate_auth(self, auth_url, username, password, project_name, domain, request):
         driver = OpenStackIdentity_3_0_Connection(
-            auth_url=auth_url+"/auth/tokens",
-            user_id=username, key=password,  #TODO: add domain
+            auth_url=auth_url + "/auth/tokens",
+            user_id=username, key=password,  # TODO: add domain
             token_scope=OpenStackIdentityTokenScope.PROJECT, tenant_name=project_name)
 
         try:

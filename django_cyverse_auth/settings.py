@@ -14,7 +14,7 @@ sys.path.insert(0, APP_DIRECTORY)
 USER_SETTINGS = getattr(settings, 'AUTHENTICATION', {})
 
 
-DEFAULTS =  {
+DEFAULTS = {
     # General
     "APP_NAME": "Iplantauth Application",
     "SITE_NAME": "",
@@ -33,7 +33,7 @@ DEFAULTS =  {
     # LDAP
     "LDAP_SERVER": None,
     "LDAP_SERVER_DN": None,
-    #GLOBUS
+    # GLOBUS
     "GLOBUS_MAPPING_FILE": None,
     "GLOBUS_OAUTH_ID": None,
     "GLOBUS_OAUTH_SECRET": None,

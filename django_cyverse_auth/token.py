@@ -218,7 +218,7 @@ class OpenstackTokenAuthentication(TokenAuthentication):
             return None
 
         sdk_args = {
-            'auth_url': auth_url.replace('5000','35357'),
+            'auth_url': auth_url.replace('5000', '35357'),
             'ex_force_base_url': auth_url.replace(":5000/v3", ":8774/v2/"),
             'identity_api_version': 3,
             'project_domain_name': domain_name,
@@ -299,8 +299,8 @@ def validate_oauth_token(token, request=None):
         logger.warn("Invalid Profile:%s does not have username/attributes"
                    % user_profile)
         return False
-    #CAS specific, converts [{u'lastName': u'Doe'}, {u'firstName': u'John'}] to {u'lastName': u'doe', u'firstName': u'John'}
-    profile_attrs = { c.keys()[0]: c.values()[0] for c in user_profile.get('attributes', []) }
+    # CAS specific, converts [{u'lastName': u'Doe'}, {u'firstName': u'John'}] to {u'lastName': u'doe', u'firstName': u'John'}
+    profile_attrs = {c.keys()[0]: c.values()[0] for c in user_profile.get('attributes', [])}
     username = username.lower()
     new_profile = {
         'username': username,
